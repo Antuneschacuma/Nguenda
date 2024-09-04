@@ -1,18 +1,16 @@
-import { Colaborador } from "../../entities";
+import { Convidado } from "../../entities/convidado";
 import { Presenca } from "../../entities/presenca";
 
-export interface CadastrarColaboradorPort {
+export interface CadastrarConvidadoPort {
   execute({
     name,
     email,
-    telefone,
     presenca,
     qrCode,
   }: {
     name: string;
     email: string;
-    telefone: string;
     presenca:  Presenca[];
     qrCode:string,
-  }): Promise<Colaborador>;
+  }): Promise<Convidado>;
 }

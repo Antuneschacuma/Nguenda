@@ -1,25 +1,26 @@
-import { Colaborador } from "./convidado";
+import { Convidado } from "./convidado";
 import { Entity } from "./entity";
 
 type presencaData = {
   id: string;
   entrada: Date;
   saida?: Date;
-  colaborador: Colaborador;
+  convidado: Convidado;
 };
 export class Presenca extends Entity {
+ 
   private entrada: Date;
   private saida?: Date;
-  private colaborador: Colaborador;
+  private convidado: Convidado;
 
   constructor({
     id,
-    colaborador,
+    convidado,
     entrada,
     saida,
   }: presencaData) {
     super(id);
-    this.colaborador = colaborador;
+    this.convidado = convidado;
     this.entrada = entrada;
     this.saida = saida;
   }
@@ -32,8 +33,8 @@ export class Presenca extends Entity {
     return this.saida;
   }
 
-  public getColaborador(): Colaborador {
-    return this.colaborador;
+  public getConvidado(): Convidado {
+    return this.convidado;
   }
 
   public setEntrada(entrada: Date): void {

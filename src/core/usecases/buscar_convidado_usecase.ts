@@ -1,11 +1,11 @@
-import { Colaborador } from "../entities";
-import { BuscarColaboradorPort } from "../ports/in";
-import { BuscarColaboradorRepositoryPort } from "../ports/out/repository"
+import { Convidado } from "../entities/convidado";
+import { BuscarConvidadoPort } from "../ports/in/buscar_convidado_port";
+import { BuscarConvidadoRepositoryPort } from "../ports/out/repository/buscar_convidado_repository_port";
 
-export class BuscarColaborador implements BuscarColaboradorPort {
-  constructor(private buscarColaboradorRepository: BuscarColaboradorRepositoryPort) {}
+export class BuscarConvidado implements BuscarConvidadoPort {
+  constructor(private buscarConvidadoRepository: BuscarConvidadoRepositoryPort) {}
 
-  async execute({ codigo }: { codigo: string; }): Promise<Colaborador> {
-     return await this.buscarColaboradorRepository.findByCodigo({ codigo });
+  async execute({ codigo }: { codigo: string; }): Promise<Convidado> {
+     return await this.buscarConvidadoRepository.findByCodigo({ codigo });
   }
 }

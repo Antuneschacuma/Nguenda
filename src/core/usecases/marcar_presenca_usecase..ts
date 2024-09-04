@@ -2,20 +2,20 @@
 import { Presenca } from "../entities/presenca";
 import { TipoAcao } from "../entities/tipo_acao";
 import { MarcarPresencaPort } from "../ports/in/marcar_presenca_port";
-import { MarcarPresencaRepositoryPort } from "../ports/out/repository";
-import { BuscarColaborador } from "./buscar_convidado_usecase";
+import { MarcarPresencaRepositoryPort } from "../ports/out/repository/marcar_presenca_repository_port";
+import { BuscarConvidado } from "./buscar_convidado_usecase";
 import { BuscarPresenca } from "./buscar_presenca_usecase";
 
 export class MarcarPresenca implements MarcarPresencaPort {
   constructor(
     private marcarPresencaRepositoryPort: MarcarPresencaRepositoryPort,
     private buscarPresenca: BuscarPresenca,
-    private buscarColaborador: BuscarColaborador,
+    private buscarConvidado: BuscarConvidado,
   ) {}
 
-  async execute({ codigoColaborador, tipoAcao }: { codigoColaborador: string; tipoAcao: TipoAcao }): Promise<Presenca> {
-    const colaborador = await this.buscarColaborador.execute({ codigo: codigoColaborador });
-    const presencaExistente = await this.buscarPresenca.execute({ colaboradorId: colaborador.getId() });
+  async execute({ codigoConvidado, tipoAcao }: { codigoConvidado: string; tipoAcao: TipoAcao }): Promise<Presenca> {
+    const convidado = await this.buscarConvidado.execute({ codigo: codigoConvidado });
+    const presencaExistente = await this.buscarPresenca.execute({ convidadoId: convidado.getId() });
     const agora = new Date();
 
     switch (tipoAcao) {
@@ -23,7 +23,7 @@ export class MarcarPresenca implements MarcarPresencaPort {
         if (presencaExistente && !presencaExistente.getSaida()) {
           throw new Error("Ja existe uma entrada registrada.");
         }
-        const novaPresenca = new Presenca({ id: "", colaborador, entrada: agora });
+        const novaPresenca = new Presenca({ id: "", convidado, entrada: agora });
         novaPresenca.validateEntrada();
         return await this.marcarPresencaRepositoryPort.save({ presenca: novaPresenca });
 

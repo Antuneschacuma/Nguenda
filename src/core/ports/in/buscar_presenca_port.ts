@@ -1,5 +1,5 @@
-import { Presenca } from "../../entities";
+import { Presenca } from "../../entities/presenca";
 
 export interface BuscarPresencaPort {
-  execute({ colaboradorId }:{colaboradorId:string}): Promise<Presenca | null>;
+  execute({ convidadoId }:{convidadoId:string}): Promise<Presenca | null>;
 }

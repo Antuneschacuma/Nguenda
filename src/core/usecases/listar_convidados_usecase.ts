@@ -1,14 +1,13 @@
-import { Colaborador } from "../entities";
-import { BuscarListaColaboradoresPort } from "../ports/in/listar_convidados_port";
+import { Convidado } from "../entities/convidado";
+import { BuscarListaConvidadosPort } from "../ports/in/listar_convidados_port";
+import { BuscarListaConvidadosRepositoryPort } from "../ports/out/repository/listar_convidados_repository_port";
 
-import { BuscarListaColaboradoresRepositoryPort } from "../ports/out/repository/listar_convidados_repository_port";
-
-export class BuscarListaColaboradores implements BuscarListaColaboradoresPort {
+export class BuscarListaConvidados implements BuscarListaConvidadosPort {
   constructor(
-    private buscarListaColaboradoresRepository:BuscarListaColaboradoresRepositoryPort
+    private buscarListaConvidadosRepository:BuscarListaConvidadosRepositoryPort
   ) {}
-    execute():Promise<Colaborador[]> {
-        return this.buscarListaColaboradoresRepository.findAllColaboradores();
+    execute():Promise<Convidado[]> {
+        return this.buscarListaConvidadosRepository.findAllColaboradores();
     }
  
 }

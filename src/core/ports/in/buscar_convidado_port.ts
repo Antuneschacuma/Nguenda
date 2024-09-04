@@ -1,5 +1,5 @@
-import { Colaborador } from "../../entities";
+import { Convidado } from "../../entities/convidado";
 
-export interface BuscarColaboradorPort{
-    execute({codigo}: {codigo: string}): Promise<Colaborador>
+export interface BuscarConvidadoPort{
+    execute({codigo}: {codigo: string}): Promise<Convidado>
 }

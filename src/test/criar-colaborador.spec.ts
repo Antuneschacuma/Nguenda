@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { CadastrarColaboradorController } from "../adapters/in/controllers/criar-colaborador-controller";
+import { CadastrarColaboradorController } from "../adapters/in/controllers/criar_convidado_controller";
 import { Presenca } from "../core/entities";
 import { CadastrarColaborador } from "../core/usecases/cadastrar_convidado_usecase";
 import { CadastrarColaboradorRepository } from "../infra/repository/cadastrar_colaborador_repository";

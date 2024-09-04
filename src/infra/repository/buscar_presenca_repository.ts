@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { BuscarPresencaRepositoryPort } from "../../core/ports/out/repository";
-import { Presenca, Colaborador } from "../../core/entities";
+import { BuscarPresencaRepositoryPort } from "../../core/ports/out/repository/buscar_presenca_repository_port";
+import { Presenca } from "../../core/entities/presenca";
+import { Convidado } from "../../core/entities/convidado";
 
 export class BuscarPresencaRepository implements BuscarPresencaRepositoryPort {
   private prisma: PrismaClient;
@@ -8,33 +9,32 @@ export class BuscarPresencaRepository implements BuscarPresencaRepositoryPort {
   constructor() {
     this.prisma = new PrismaClient();
   }
-  async findByColaboradorId({ colaboradorId }: { colaboradorId: string }): Promise<Presenca| null > {
+  async findByColaboradorId({ convidadoId }: { convidadoId: string }): Promise<Presenca| null > {
     const presencaEncontrada = await this.prisma.presenca.findFirst({
       where: {
-        colaboradorId,
+        convidadoId,
       },
       orderBy: {
         entrada: 'desc',
       },
-      include: { colaborador: true },
+      include: { convidado: true },
     });
   
     if (!presencaEncontrada) {
       return null;
     }
   
-    const colaborador = new Colaborador({
-      id: presencaEncontrada.colaboradorId,
-      name: presencaEncontrada.colaborador.name,
-      email: presencaEncontrada.colaborador.email,
-      telefone: presencaEncontrada.colaborador.telefone,
+    const convidado = new Convidado({
+      id: presencaEncontrada.convidadoId,
+      name: presencaEncontrada.convidado.name,
+      email: presencaEncontrada.convidado.email,
       presenca: [],
-      qrCode: presencaEncontrada.colaborador.qrCode,
+      qrCode: presencaEncontrada.convidado.qrCode,
     });
   
     const presenca = new Presenca({
       id: presencaEncontrada.id,
-      colaborador: colaborador,
+      convidado: convidado,
       entrada: presencaEncontrada.entrada,
       saida: presencaEncontrada.saida || undefined,
     });

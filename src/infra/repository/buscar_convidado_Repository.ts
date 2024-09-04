@@ -1,12 +1,11 @@
 import { PrismaClient } from "@prisma/client";
-import { Colaborador } from "../../core/entities";
-import { BuscarColaboradorRepositoryPort } from "../../core/ports/out/repository";
-
+import { BuscarConvidadoRepositoryPort } from "../../core/ports/out/repository/buscar_convidado_repository_port";
+import { Convidado } from "../../core/entities/convidado";
 const prisma = new PrismaClient();
 
-export class BuscarColaboradorRepository implements BuscarColaboradorRepositoryPort {
-  async findByCodigo({ codigo }: { codigo: string }): Promise<Colaborador> {
-    const colaboradorEncontrado = await prisma.colaborador.findUnique({
+export class BuscarConvidoRepository implements BuscarConvidadoRepositoryPort {
+  async findByCodigo({ codigo }: { codigo: string }): Promise<Convidado> {
+    const convidadoEncontrado = await prisma.convidado.findUnique({
       where: {
         qrCode: codigo,
       },
@@ -14,19 +13,18 @@ export class BuscarColaboradorRepository implements BuscarColaboradorRepositoryP
         presenca: true,
       },
     });
-    if (!colaboradorEncontrado) {
-      throw new Error('Colaborador não encontrado...');
+    if (!convidadoEncontrado) {
+      throw new Error('Convidado não encontrado...');
     }
   
-    const colaborador = new Colaborador({
-      id: colaboradorEncontrado.id,
-      name: colaboradorEncontrado.name,
-      email: colaboradorEncontrado.email,
-      telefone: colaboradorEncontrado.telefone,
+    const convidado = new Convidado({
+      id: convidadoEncontrado.id,
+      name: convidadoEncontrado.name,
+      email: convidadoEncontrado.email,
       presenca: [],
-      qrCode: colaboradorEncontrado.qrCode,
+      qrCode: convidadoEncontrado.qrCode,
     });
   
-    return colaborador;
+    return convidado;
   }
 }

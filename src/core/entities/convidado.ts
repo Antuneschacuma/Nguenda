@@ -1,27 +1,24 @@
 import { Entity } from "./entity";
 import { Presenca } from "./presenca";
 
-type UserData = {
+type ConvidadoData = {
   id: string;
   name: string;
   email: string;
-  telefone: string;
   presenca: Presenca[];
   qrCode: string;
 };
 
-export class User extends Entity {
+export class Convidado extends Entity {
   private name: string;
   private email: string;
-  private telefone: string;
   private presenca: Presenca[];
   private qrCode: string;
 
-  constructor({ id, name, email, telefone, presenca, qrCode }: UserData) {
+  constructor({ id, name, email,presenca, qrCode }: ConvidadoData) {
     super(id);
     this.name = name;
     this.email = email;
-    this.telefone = telefone;
     this.presenca = presenca || [];
     this.qrCode = qrCode;
   }
@@ -32,10 +29,6 @@ export class User extends Entity {
 
   public getEmail(): string {
     return this.email;
-  }
-
-  public getTelefone(): string {
-    return this.telefone;
   }
 
   public getPresenca(): Presenca[] {
@@ -53,14 +46,9 @@ export class User extends Entity {
     if (!this.email || this.email.trim() === "") {
       throw new Error("Email inválido.");
     }
-    if (!this.telefone || this.telefone.trim() === "") {
-      throw new Error("Telefone inválido.");
-    }
     if (!this.qrCode || this.qrCode.trim() === "") {
       throw new Error("QR code inválido.");
     }
-    if (!Array.isArray(this.presenca)) {
-      throw new Error("Registro de presença inválido.");
-    }
+    
   }
 }

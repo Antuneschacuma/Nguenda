@@ -1,36 +1,31 @@
-import { Colaborador, Presenca } from "../entities";
+import { Convidado } from "../entities/convidado";
+import { Presenca } from "../entities/presenca";
+import { CadastrarConvidadoPort } from "../ports/in/cadastrar_convidado_port";
+import { CadastrarConvidadoRepositoryPort } from "../ports/out/repository/cadastrar_convidado_repository_port";
 
-import { CadastrarColaboradorPort } from "../ports/in";
-import { CadastrarColaboradorRepositoryPort } from "../ports/out/repository";
-
-export class CadastrarColaborador implements CadastrarColaboradorPort {
-  constructor(
-    private cadastrarColaborador: CadastrarColaboradorRepositoryPort
-  ) {}
+export class CadastrarConvidado implements CadastrarConvidadoPort {
+  constructor(private cadastrarConvidado: CadastrarConvidadoRepositoryPort) {}
   async execute({
     id,
     name,
     email,
-    telefone,
     presenca,
     qrCode,
   }: {
     id: string;
     name: string;
     email: string;
-    telefone: string;
     presenca: Presenca[];
     qrCode: string;
-  }): Promise<Colaborador> {
-    const colaborador = new Colaborador({
+  }): Promise<Convidado> {
+    const convidado = new Convidado({
       id,
       name,
       email,
-      telefone,
-      presenca: presenca || [],
+      presenca,
       qrCode,
     });
-    colaborador.validate();
-    return await this.cadastrarColaborador.save(colaborador);
+
+    return await this.cadastrarConvidado.save(convidado);
   }
 }

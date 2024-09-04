@@ -1,5 +1,5 @@
 import { Application, Request, Response, NextFunction } from 'express';
-import { BuscarListaPresencaController } from '../adapters/in/controllers/listar-presencas-controller';
+import { BuscarListaPresencaController } from '../adapters/in/controllers/listar_presencas_controller';
 import { BuscarListaPresenca } from '../core/usecases/listar_presencas_usecase';
 import { BuscarListaPresencaRepository } from '../infra/repository/listar_presencas_repository';
 import { ErrorHandler } from '../exceptions/ErrorHandler';

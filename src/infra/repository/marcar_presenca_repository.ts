@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import { MarcarPresencaRepositoryPort } from "../../core/ports/out/repository";
-import { Presenca } from "../../core/entities";
+import { MarcarPresencaRepositoryPort } from "../../core/ports/out/repository/marcar_presenca_repository_port";
+import { Presenca } from "../../core/entities/presenca";
 
 export class MarcarPresencaRepository implements MarcarPresencaRepositoryPort {
   private prisma: PrismaClient;
@@ -10,8 +10,8 @@ export class MarcarPresencaRepository implements MarcarPresencaRepositoryPort {
   }
 
   async save({ presenca }: { presenca: Presenca }): Promise<Presenca> {
-    const colaborador = presenca.getColaborador();
-    const colaboradorId = colaborador.getId();
+    const convidado = presenca.getConvidado();
+    const convidadoId = convidado.getId();
 
     let presencaSalva;
 
@@ -27,7 +27,7 @@ export class MarcarPresencaRepository implements MarcarPresencaRepositoryPort {
         data: {
           entrada: presenca.getEntrada(),
           saida: presenca.getSaida(),
-          colaboradorId: colaboradorId,
+          convidadoId: convidadoId,
         },
       });
     }
@@ -36,7 +36,7 @@ export class MarcarPresencaRepository implements MarcarPresencaRepositoryPort {
       id: presencaSalva.id,
       entrada: presencaSalva.entrada,
       saida: presencaSalva.saida || undefined,
-      colaborador: colaborador,
+      convidado: convidado,
     });
   }
 }

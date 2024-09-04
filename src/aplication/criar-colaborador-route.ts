@@ -1,19 +1,19 @@
 import { Application, Request, Response, NextFunction } from 'express';
 import { plainToClass } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
-import { CadastrarColaboradorController } from '../adapters/in/controllers/criar-colaborador-controller';
-import { CadastrarColaborador } from '../core/usecases';
-import { CadastrarColaboradorRepository } from '../infra/repository';
 import { CriarColaboradorDTO } from '../dtos/criar-colaborador-dto';
 import { ErrorHandler } from '../exceptions/ErrorHandler';
+import { CadastrarConvidadoController } from '../adapters/in/controllers/criar_convidado_controller';
+import { CadastrarConvidadoRepository } from '../infra/repository/cadastrar_colaborador_repository';
+import { CadastrarConvidado } from '../core/usecases/cadastrar_convidado_usecase';
 
 export class ColaboradorRoute {
-  private cadastrarColaboradorController: CadastrarColaboradorController;
+  private cadastrarConvidadoController: CadastrarConvidadoController;
 
   constructor() {
-    const cadastrarColaboradorRepository = new CadastrarColaboradorRepository();
-    const cadastrarColaborador = new CadastrarColaborador(cadastrarColaboradorRepository);
-    this.cadastrarColaboradorController = new CadastrarColaboradorController(cadastrarColaborador);
+    const cadastrarConvidadoRepository = new CadastrarConvidadoRepository();
+    const cadastrarConvidado = new CadastrarConvidado(cadastrarConvidadoRepository);
+    this.cadastrarConvidadoController = new CadastrarConvidadoController(cadastrarConvidado);
   }
 
   public registerRoutes(app: Application) {
@@ -22,7 +22,7 @@ export class ColaboradorRoute {
         const dto = plainToClass(CriarColaboradorDTO, req.body);
         await validateOrReject(dto);
 
-        const result = await this.cadastrarColaboradorController.criar(dto);
+        const result = await this.cadastrarConvidadoController.criar(dto);
         res.status(201).send(result);
       } catch (error: any) {
         ErrorHandler.handle(error, res);

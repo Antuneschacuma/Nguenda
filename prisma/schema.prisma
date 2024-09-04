@@ -1,0 +1,60 @@
+// Configurações do DataSource e Gerador
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Modelo Presenca: Representa a presença dos convidados nos eventos
+model Presenca {
+  id          String    @id @default(uuid()) // ID gerado com UUID para consistência com o restante do sistema
+  entrada     DateTime  // Data e hora de entrada do convidado
+  saida       DateTime? // Data e hora de saída, pode ser nula se o convidado ainda estiver presente
+  convidado   Convidado @relation(fields: [convidadoId], references: [id]) // Relação com o convidado
+  convidadoId String    // Chave estrangeira para o convidado
+  evento      Evento    @relation(fields: [eventoId], references: [id]) // Relação com o evento
+  eventoId    String    // Chave estrangeira para o evento
+  
+  // Mapeamento do nome da tabela para o banco de dados
+  @@map("presencas")
+}
+
+// Modelo Convidado: Representa os convidados dos eventos
+model Convidado {
+  id          String     @id @default(uuid()) // ID gerado com UUID para padronização
+  name        String     // Nome do convidado
+  email       String     @unique // E-mail único para cada convidado
+  qrCode      String     @unique // Código QR único para identificação do convidado
+  presencas   Presenca[] // Relação com as presenças
+
+  // Relação opcional com eventos se desejar um modelo mais flexível
+  evento      Evento?    @relation(fields: [eventoId], references: [id])
+  eventoId    String?    
+
+  @@map("convidados")
+}
+
+// Modelo Evento: Representa os eventos gerenciados pelo sistema
+model Evento {
+  id           String      @id @default(uuid()) // UUID como chave primária para identificar o evento
+  nome         String      // Nome do evento
+  data         DateTime    // Data e hora do evento
+  local        String      // Local do evento
+  capacidade   Int         // Capacidade máxima de convidados no evento
+  criadoEm     DateTime    @default(now()) // Data de criação do evento
+  atualizadoEm DateTime    @updatedAt // Data de atualização automática quando o evento é atualizado
+  
+  // Relacionamentos
+  convidados   Convidado[] // Relacionamento com convidados
+  presencas    Presenca[]  // Relacionamento com presenças registradas
+  
+  // Indexes para melhorar a busca por data e nome
+  @@index([data])
+  @@index([nome, data])
+
+  // Mapeamento do nome da tabela para o banco de dados
+  @@map("eventos")
+}

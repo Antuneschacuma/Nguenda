@@ -1,6 +1,7 @@
-import { Colaborador, Presenca } from "../../core/entities";
 import { PrismaClient } from "@prisma/client";
-import { BuscarListaPresencaRepositoryPort } from "../../core/ports/out/repository";
+import { BuscarListaPresencaRepositoryPort } from "../../core/ports/out/repository/listar_presencas_repository_port";
+import { Presenca } from "../../core/entities/presenca";
+import { Convidado } from "../../core/entities/convidado";
 
 export class BuscarListaPresencaRepository implements BuscarListaPresencaRepositoryPort {
   private prisma = new PrismaClient();
@@ -16,25 +17,24 @@ export class BuscarListaPresencaRepository implements BuscarListaPresencaReposit
         },
       },
       include: {
-        colaborador: true,
+        convidado: true,
       },
     });
     if (!presencasData || presencasData.length === 0) {
       throw new Error('Registo de presencas Vazio')
     }
     const presencas = presencasData.map((data) => {
-      const colaborador = new Colaborador({
-        id:data.colaborador.id,
-        name: data.colaborador.name,
-        email: data.colaborador.email,
-        telefone: data.colaborador.telefone,
+      const convidado = new Convidado({
+        id:data.convidado.id,
+        name: data.convidado.name,
+        email: data.convidado.email,
         presenca: [],
-        qrCode: data.colaborador.qrCode,
+        qrCode: data.convidado.qrCode,
       });
 
       return new Presenca({
         id:data.id,
-        colaborador,
+        convidado,
         entrada: data.entrada,
         saida:data.saida || undefined
       });

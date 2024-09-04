@@ -1,6 +1,6 @@
-import { Colaborador } from "../../entities";
+import { Convidado } from "../../entities/convidado";
 
-export interface BuscarListaColaboradoresPort{
-    execute():Promise<Colaborador[]>;
+export interface BuscarListaConvidadosPort{
+    execute():Promise<Convidado[]>;
 
 }

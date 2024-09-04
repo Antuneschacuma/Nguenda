@@ -1,10 +1,10 @@
-import { CadastrarColaboradorRepositoryPort } from "../../core/ports/out/repository";
 import { PrismaClient, Prisma } from "@prisma/client";
-import { Colaborador } from "../../core/entities";
 import { DuplicateEntryError } from "../../exceptions/DuplicateError";
+import { Convidado } from "../../core/entities/convidado";
+import { CadastrarConvidadoRepositoryPort } from "../../core/ports/out/repository/cadastrar_convidado_repository_port";
 
-export class CadastrarColaboradorRepository
-  implements CadastrarColaboradorRepositoryPort
+export class CadastrarConvidadoRepository
+  implements CadastrarConvidadoRepositoryPort
 {
   private prisma: PrismaClient;
 
@@ -12,22 +12,20 @@ export class CadastrarColaboradorRepository
     this.prisma = new PrismaClient();
   }
 
-  async save(colaborador: Colaborador): Promise<Colaborador> {
+  async save(convidado: Convidado): Promise<Convidado> {
     try {
-      const createdColaborador = await this.prisma.colaborador.create({
+      const createdColaborador = await this.prisma.convidado.create({
         data: {
-          name: colaborador.getName(),
-          email: colaborador.getEmail(),
-          telefone: colaborador.getTelefone(),
-          qrCode: colaborador.getQrCode(),
+          name: convidado.getName(),
+          email: convidado.getEmail(),
+          qrCode: convidado.getQrCode(),
         },
       });
 
-      return new Colaborador({
+      return new Convidado({
         id: createdColaborador.id,
         name: createdColaborador.name,
         email: createdColaborador.email,
-        telefone: createdColaborador.telefone,
         presenca: [],
         qrCode: createdColaborador.qrCode,
       });

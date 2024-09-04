@@ -1,5 +1,5 @@
-import { Presenca } from "../../../core/entities";
-import { BuscarListaPresencaPort } from "../../../core/ports/in";
+import { Presenca } from "../../../core/entities/presenca";
+import { BuscarListaPresencaPort } from "../../../core/ports/in/listar_presencas_port";
 import { BuscarPresencaDTO } from "../../../dtos/buscar_presencas_dto";
 import { PresencaDTO } from "../../../dtos/presenca_dto";
 
@@ -13,8 +13,8 @@ export class BuscarListaPresencaController {
 
     return presencas.map((presenca) => {
       return new PresencaDTO(
-        presenca.getColaborador().getId(),
-        presenca.getColaborador().getName(),
+        presenca.getConvidado().getId(),
+        presenca.getConvidado().getName(),
         presenca.getEntrada(),
         presenca.getSaida() || null,
       );
